@@ -32,6 +32,8 @@ def request_token(user_id):
 class MyRequestHandler(http.server.SimpleHTTPRequestHandler):
   def do_POST(self):
     if self.path == "/generate-temp-sift-url":
+      # ExamplePartner only has a single user, "lucille", so we hardcode it here
+      # instead of bothering to maintain an HTTP session.
       token = request_token("lucille")
       
       url = "%s/partners/ExamplePartner/login?token=%s" % (SIFT, token)
