@@ -7,7 +7,11 @@ PORT = 8000
 class MyRequestHandler(http.server.SimpleHTTPRequestHandler):
   def do_POST(self):
     if self.path == "/generate-temp-sift-token":
-      self.send_error(501) # not implemented
+      token = b"mytoken"
+      
+      self.send_response(200)
+      self.end_headers()
+      self.wfile.write(b'{"token": "%s"}' % token)
     else:
       self.send_error(404)
 
