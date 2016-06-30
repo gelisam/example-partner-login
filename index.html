@@ -1,22 +1,18 @@
 <html>
   <head>
     <script>
-      var sift = "https://siftnlp.keatext.com";
-      //sift = "http://localhost:3000"
-      
       function redirect_to_sift() {
         var httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = function (e) {
           if (e.target.response) {
-            // response = {token: "mytoken"}
+            // response = {url: "https://siftnlp.keatext.com/..."}
             var response = JSON.parse(e.target.response);
-            var url = sift + "/partners/ExamplePartner/login?token=" + response.token;
 
             // redirect to SIFT
-            location.href = url;
+            location.href = response.url;
           }
         }
-        httpRequest.open('POST', '/generate-temp-sift-token');
+        httpRequest.open('POST', '/generate-temp-sift-url');
         httpRequest.send();
       }
       
