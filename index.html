@@ -2,6 +2,9 @@
   <head>
     <script>
       function redirect_to_sift() {
+        // important: generate the url *after* the user clicks on the link,
+        // otherwise the token might expire before the user clicks.
+        
         var httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = function (e) {
           if (e.target.response) {
