@@ -27,14 +27,15 @@ def request_token(user_id):
     # json_response = {"token": token}
     binary_response = rfile.read()
     json_response = json.loads(binary_response.decode("utf8"))
-    print(repr(json_response))
     return json_response['token']
 
 class MyRequestHandler(http.server.SimpleHTTPRequestHandler):
   def do_POST(self):
     if self.path == "/generate-temp-sift-url":
+      # ExamplePartner only has a single user, "lucille", so we hardcode it here
+      # instead of bothering to maintain an HTTP session.
       token = request_token("lucille")
-      print(repr(token))
+      
       url = "%s/partners/ExamplePartner/login?token=%s" % (SIFT, token)
       json_response = {"url": url}
       binary_response = json.dumps(json_response).encode("utf8")
