@@ -6,7 +6,7 @@ import socketserver
 import urllib.request
 
 PORT = 8000
-SIFT = "https://app.keatext.com"
+SIFT = "https://app.keatext.ai"
 #SIFT = "http://localhost:3000"
 
 PARTNER_USERNAME = b"maelle.blanchette@keatext.com"
