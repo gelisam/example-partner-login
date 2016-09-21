@@ -5,9 +5,9 @@ import json
 import socketserver
 import urllib.request
 
-PORT = 8000
-SIFT = "https://app.keatext.ai"
-#SIFT = "http://localhost:3000"
+PORT = 8001
+#SIFT = "https://app.keatext.ai"
+SIFT = "http://localhost:3000"
 
 PARTNER_USERNAME = b"maelle.blanchette@keatext.com"
 PARTNER_PASSWORD = b"mypassword"
