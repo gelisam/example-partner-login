@@ -9,21 +9,41 @@ PORT = 8001
 #SIFT = "https://app.keatext.ai"
 SIFT = "http://localhost:3000"
 
-PARTNER_USERNAME = b"maelle.blanchette@keatext.com"
-PARTNER_PASSWORD = b"mypassword"
+# the credentials of the special "partner" user we have created for you when you
+# became a Keatext partner
+PARTNER_USERNAME = "maelle.blanchette@keatext.com"
+PARTNER_PASSWORD = "mypassword"
 
+# the id obtained when you associated an organization with the above user using
+# POST https://app.keatext.ai/partner/organizations
+ORGANIZATION_ID = "5783d90b927e871d007e339f"
+
+
+def request_jwt():
+  url = "%s/login" % SIFT
+  json_payload = {"username": PARTNER_USERNAME, "password": PARTNER_PASSWORD}
+  binary_payload = json.dumps(json_payload).encode("utf8")
+  request = urllib.request.Request(url, binary_payload)
+  request.add_header("Content-Type", "application/json")
+  request.add_header("Accept", "application/json")
+  
+  with urllib.request.urlopen(request) as rfile:
+    # json_response = {"jwt": {"token": token}}
+    binary_response = rfile.read()
+    json_response = json.loads(binary_response.decode("utf8"))
+    return json_response['jwt']['token']
 
 def request_token(user_email):
-  url = "%s/api/v1/partner/login_token" % SIFT
+  url = "%s/partner/organizations/%s/login_token" % (SIFT, ORGANIZATION_ID)
   json_payload = {"email": user_email}
   binary_payload = json.dumps(json_payload).encode("utf8")
   request = urllib.request.Request(url, binary_payload)
   
-  # this base64 rigmarole is the "basic auth" standard.
-  auth_string = PARTNER_USERNAME + b":" + PARTNER_PASSWORD
-  auth_header = b"Basic " + base64.encodestring(auth_string).rstrip()
+  jwt = request_jwt()
+  auth_header = "Bearer %s" % jwt
   request.add_header("Authorization", auth_header)
   request.add_header("Content-Type", "application/json")
+  request.add_header("Accept", "application/json")
   
   with urllib.request.urlopen(request) as rfile:
     # json_response = {"token": token}
@@ -37,8 +57,10 @@ class MyRequestHandler(http.server.SimpleHTTPRequestHandler):
       # ExamplePartner only has a single user, "Lucille", so we hardcode her email
       # here instead of bothering to maintain an HTTP session.
       token = request_token("lucille.blanchette@keatext.com")
+      print("token", token)
       
       url = "%s/partner-login?token=%s" % (SIFT, token)
+      print("url", url)
       json_response = {"url": url}
       binary_response = json.dumps(json_response).encode("utf8")
       
