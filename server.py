@@ -6,8 +6,8 @@ import socketserver
 import urllib.request
 
 PORT = 8001
-#SIFT = "https://app.keatext.ai"
-SIFT = "http://localhost:3000"
+#KEATEXT = "https://app.keatext.ai"
+KEATEXT = "http://localhost:3000"
 
 # the credentials of the special "partner" user we have created for you when you
 # became a Keatext partner
@@ -20,7 +20,7 @@ ORGANIZATION_ID = "5783d90b927e871d007e339f"
 
 
 def request_jwt():
-  url = "%s/login" % SIFT
+  url = "%s/login" % KEATEXT
   json_payload = {"username": PARTNER_USERNAME, "password": PARTNER_PASSWORD}
   binary_payload = json.dumps(json_payload).encode("utf8")
   request = urllib.request.Request(url, binary_payload)
@@ -34,7 +34,7 @@ def request_jwt():
     return json_response['jwt']['token']
 
 def request_url(organization_id):
-  url = "%s/partner/organizations/%s/login_token" % (SIFT, organization_id)
+  url = "%s/partner/organizations/%s/login_token" % (KEATEXT, organization_id)
   json_payload = {}
   binary_payload = json.dumps(json_payload).encode("utf8")
   request = urllib.request.Request(url, binary_payload)
@@ -53,7 +53,7 @@ def request_url(organization_id):
 
 class MyRequestHandler(http.server.SimpleHTTPRequestHandler):
   def do_POST(self):
-    if self.path == "/generate-temp-sift-url":
+    if self.path == "/generate-temp-keatext-url":
       # ExamplePartner is associated with a single organization, "Lucille", so we
       # hardcode her organization id above instead of bothering to maintain an
       # HTTP session.
