@@ -33,7 +33,7 @@ def request_jwt():
     json_response = json.loads(binary_response.decode("utf8"))
     return json_response['jwt']['token']
 
-def request_token(user_email):
+def request_url(user_email):
   url = "%s/partner/organizations/%s/login_token" % (SIFT, ORGANIZATION_ID)
   json_payload = {"email": user_email}
   binary_payload = json.dumps(json_payload).encode("utf8")
@@ -49,18 +49,16 @@ def request_token(user_email):
     # json_response = {"token": token}
     binary_response = rfile.read()
     json_response = json.loads(binary_response.decode("utf8"))
-    return json_response['token']
+    return json_response['url']
 
 class MyRequestHandler(http.server.SimpleHTTPRequestHandler):
   def do_POST(self):
     if self.path == "/generate-temp-sift-url":
       # ExamplePartner only has a single user, "Lucille", so we hardcode her email
       # here instead of bothering to maintain an HTTP session.
-      token = request_token("lucille.blanchette@keatext.com")
-      print("token", token)
-      
-      url = "%s/partner-login?token=%s" % (SIFT, token)
+      url = request_url("lucille.blanchette@keatext.com")
       print("url", url)
+      
       json_response = {"url": url}
       binary_response = json.dumps(json_response).encode("utf8")
       
