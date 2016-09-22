@@ -33,9 +33,9 @@ def request_jwt():
     json_response = json.loads(binary_response.decode("utf8"))
     return json_response['jwt']['token']
 
-def request_url(user_email):
-  url = "%s/partner/organizations/%s/login_token" % (SIFT, ORGANIZATION_ID)
-  json_payload = {"email": user_email}
+def request_url(organization_id):
+  url = "%s/partner/organizations/%s/login_token" % (SIFT, organization_id)
+  json_payload = {}
   binary_payload = json.dumps(json_payload).encode("utf8")
   request = urllib.request.Request(url, binary_payload)
   
@@ -54,9 +54,10 @@ def request_url(user_email):
 class MyRequestHandler(http.server.SimpleHTTPRequestHandler):
   def do_POST(self):
     if self.path == "/generate-temp-sift-url":
-      # ExamplePartner only has a single user, "Lucille", so we hardcode her email
-      # here instead of bothering to maintain an HTTP session.
-      url = request_url("lucille.blanchette@keatext.com")
+      # ExamplePartner is associated with a single organization, "Lucille", so we
+      # hardcode her organization id above instead of bothering to maintain an
+      # HTTP session.
+      url = request_url(ORGANIZATION_ID)
       print("url", url)
       
       json_response = {"url": url}
