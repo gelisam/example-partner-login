@@ -6,8 +6,8 @@ import socketserver
 import urllib.request
 
 PORT = 8001
-#KEATEXT = "https://app.keatext.ai"
-KEATEXT = "http://localhost:3000"
+KEATEXT = "https://app.keatext.ai"
+#KEATEXT = "http://localhost:3000"
 
 # the credentials of the special "partner" user we have created for you when you
 # became a Keatext partner
