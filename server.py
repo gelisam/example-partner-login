@@ -62,7 +62,6 @@ class MyRequestHandler(http.server.SimpleHTTPRequestHandler):
       # hardcode her organization id above instead of bothering to maintain an
       # HTTP session.
       url = request_url(ORGANIZATION_ID)
-      print("url", url)
       
       json_response = {"url": url}
       binary_response = json.dumps(json_response).encode("utf8")
