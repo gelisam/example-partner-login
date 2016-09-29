@@ -35,7 +35,11 @@ def request_jwt():
 
 def request_url(organization_id):
   url = "%s/partner/organizations/%s/login_token" % (KEATEXT, organization_id)
-  json_payload = {}
+  json_payload = {
+    "filters": [
+      {"field": "comment_id", "value": "cmt_123"}
+    ]
+  }
   binary_payload = json.dumps(json_payload).encode("utf8")
   request = urllib.request.Request(url, binary_payload)
   
