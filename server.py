@@ -16,7 +16,7 @@ PARTNER_PASSWORD = "mypassword"
 
 # the id obtained when you associated an organization with the above user using
 # POST https://app.keatext.ai/partner/organizations
-ORGANIZATION_ID = "5783d90b927e871d007e339f"
+ORGANIZATION_ID = "57f5416ca078d21c00647a22"
 
 
 def request_jwt():
