@@ -1,7 +1,7 @@
 <html>
   <head>
     <script>
-      function redirect_to_keatext() {
+      function redirect_to_keatext(redirect) {
         // important: generate the url *after* the user clicks on the link,
         // otherwise the token might expire before the user clicks.
         
@@ -11,8 +11,12 @@
             // response = {url: "https://app.keatext.ai/..."}
             var response = JSON.parse(e.target.response);
 
-            // redirect to SIFT
-            location.href = response.url;
+            // redirect to KEATEXT
+            if (redirect) {
+              location.href = response.url;
+            } else {
+              document.getElementById('the_iframe').src = response.url;
+            }
           }
         }
         httpRequest.open('POST', '/generate-temp-keatext-url');
@@ -28,9 +32,11 @@
     <div>
       <p>Hello Lucille, welcome to your ExamplePartner account. What would you like to do today?</p>
       <ul>
-        <li><a href="#" onclick="redirect_to_keatext()">Analyze my data</a></li>
+        <li><a href="#" onclick="redirect_to_keatext(true)">Go to my data</a></li>
+        <li><a href="#" onclick="redirect_to_keatext(false)">Open my data in the iframe below</a></li>
         <li><a href="#" onclick="log_out()">Log out</a></li>
       </ul>
+      <iframe id='the_iframe' src="" width="100%" height="100%"></iframe>
     </div>
   </body>
 </html>
